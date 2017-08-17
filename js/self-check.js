@@ -1,169 +1,156 @@
-/* CONSTANTS */
-var baseURL = "https://api-na.hosted.exlibrisgroup.com/";
-var apiKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-
-var libraryName = "XXXXX";
-var circDesk = "XXXXXXXXXXXXXXXX";
-
-
-function initiate() {
-	getModalBox();
+$(document).ready(function () {
+	/* CONSTANTS */
+	var user;
 	
-	$("#barcode").bind("keypress", function(e) {
-		var code = e.keyCode || e.which;
-		if(code == 13) {
-			loan();
-		 }
-	});
-	
-
-	$("#userid").bind("keypress", function(e) {
-		var code = e.keyCode || e.which;
-		if(code == 13) {
-			login();
-		 }
-	});
-}
-
-var modal;
-var span;
-var user;
-
-function getModalBox() {
-	
-	// Get the modal
-	modal = document.getElementById('myModal');
-	$("#myModal").hide();
-	
-	// Get the <span> element that closes the modal
-	span = document.getElementsByClassName("close")[0];
-
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-		$("#myModal").hide();
-	}
-
-	// When the user clicks anywhere outside of the modal, close it
-	/*
-	window.onclick = function(event) {
-	    if (event.target == modal) {
-	    	$("#myModal").hide();
-	    }
-	}
-	*/
-}
-
-function returnToBarcode() {
-	$("#barcode").prop("disabled", false);
-	$("#myModal").hide();
-	
-	$("#barcode").val("");
-	$("#barcode").focus();
-}
-
-
-/* LOGIN */
-
-function login() {
-    var loginid = $("#userid").val();
-    if ((loginid != null) && (loginid != "")) {
-    	
-    	$("#userid").prop("disabled", true);
-    	$("#loginerror").addClass("hide");
-    	
-    	$("#modalheader").text("loading data, please wait...");
-        $("#myModal").show();
-        $(".close").hide();
-        
-        $.ajax({
-    		type: "GET",
-    		url: baseURL + "almaws/v1/users/" + $("#userid").val() + "?apikey=" + apiKey + "&expand=loans,requests,fees&format=json",
-			contentType: "text/plain",
-			dataType : "json",
-			crossDomain: true
-			
-		}).done(function(data) {
-			user = data;
-			
-			// prepare scan box
-			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
-			$("#userloans").text(data.loans.value);
-			$("#userrequests").text(data.requests.value);
-			$("#userfees").text("$" + data.fees.value);
-			//$("#usernotes").text(data.user_note.length);
-			
-			 $("#loanstable").find("tr:gt(0)").remove();
-			
-			$("#loginbox").addClass("hide");
-			$("#scanbox").toggleClass("hide");
-			
-			$("#barcode").focus();
-			
-		}).fail(function(jqxhr, textStatus, error) {
-		    $("#loginerror").toggleClass("hide");
-		    console.log(jqxhr.responseText);
-		    
-		}).always(function() {
-			$("#userid").prop("disabled", false);
-		    $("#myModal").hide();
+	function checkInactivity() {
+		var interval;
+		$(document).on('mousemove keyup keypress click', function () {
+			clearTimeout(interval);
+			settimeout();
 		});
-    }
-}
 
-function loaduser(data) {
-	alert(data);
-}
+		function settimeout() {
+			// Logout and clear data after 60 seconds of inactivity
+			interval = setTimeout(clearData, 60000);
+		}
+	}
 
-function loan() {
-	
-	var barcode = $("#barcode").val();
-    if ((barcode != null) && (barcode != "")) {
-    	
-    	$("#modalheader").text("processing request, please wait...");
-        $("#myModal").show();
-        $(".close").hide();
+	function bindEnterKey() {
+		$("#barcode").bind("keypress", function (e) {
+			var code = e.keyCode || e.which;
+			// Enter key activates lookup
+			if (code === 13) {
+				loan();
+			} else if (code < 48 || code > 57) {  // only digits allowed
+				e.preventDefault();
+			}
+		});
 
-		$("#barcode").prop("disabled", true);
+		$("#userid").bind("keypress", function (e) {
+			var code = e.keyCode || e.which;
+			// Enter key activates login
+			if (code === 13) {
+				login();
+			} else if (code < 48 || code > 57) {  // only digits allowed
+				e.preventDefault();
+			}
+		});
+	}
 
-    	$.ajax({
-    		type: "POST",
-    		url: baseURL + "almaws/v1/users/" + user.primary_id + "/loans?user_id_type=all_unique&item_barcode=" + $("#barcode").val() + "&apikey=" + apiKey,
-    		contentType: "application/xml",
-    		data: "<?xml version='1.0' encoding='UTF-8'?><item_loan><circ_desk>" + circDesk + "</circ_desk><library>" + libraryName + "</library></item_loan>",
-    		dataType: "xml"
-    	}).done(function(data){
-    		
-    		var dueDate = new Date($(data).find("due_date").text());
-    		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
-    		$("#loanstable").append("<tr><td>" + $(data).find("title").text() + "</td><td>" + dueDateText + "</td></tr>");
-    		
-    		returnToBarcode();
-    		
-    	}).fail(function(jqxhr, textStatus, error) {
-    		console.log(jqxhr.responseText);
-    		
-    		$("#modalheader").text("");
-    		$("#modalheader").append("item not avaiable for loan.<br/><br/>please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
-    		$("#barcodeerrorbutton").focus();
-    		
-    		$(".close").show();
+	function login() {
+		var loginid = $("#userid").val();
+		if ((loginid != null) && (loginid != "")) {
 
-    		$("#barcode").val("");
+			$("#userid").prop("disabled", true);
+			$("#loginerror").addClass("hide");
 
-    	}).always(function() {
-    		
-    	});
-    	
-    }
-} 
+			$("#modalheader").text("loading data, please wait...");
+			$("#myModal").show();
+			$(".close").hide();
 
-function logout() {
-	$("#userid").val("");
-	$("#loginbox").toggleClass("hide");
-	$("#scanbox").toggleClass("hide");
+			$.ajax({
+				type: "GET",
+				url: baseURL + "almaws/v1/users/" + $("#userid").val() + "?apikey=" + apiKey + "&expand=loans,requests,fees&format=json",
+				contentType: "text/plain",
+				dataType: "json",
+				crossDomain: true
+
+			}).done(function (data) {
+				user = data;
+
+				// prepare scan box
+				$("#scanboxtitle #firstname").text(data.first_name);
+				$("#scanboxtitle #lastname").text(data.last_name);
+				$("#userloans").text(data.loans.value);
+				$("#userrequests").text(data.requests.value);
+				$("#userfees").text("$" + data.fees.value);
+				$("#loanstable").find("tr:gt(0)").remove();
+
+				$("#loginbox").hide();
+				$("#scanbox").fadeIn(500);
+
+				$("#barcode").focus();
+				checkInactivity(true);
+			}).fail(function (jqxhr, textStatus, error) {
+				$("#loginerror").show();
+				console.log(jqxhr.responseText);
+				setTimeout(function () {
+					$("#loginerror").fadeOut(1000);
+				}, 3000);
+				$("#userid").val("");
+				$("#userid").focus();
+			}).always(function () {
+				$("#userid").prop("disabled", false);
+			});
+		}
+	}
+
+	function loan() {
+		var barcode = $("#barcode").val();
+		if ((barcode != null) && (barcode != "")) {
+
+			$("#barcode").prop("disabled", true);
+
+			$.ajax({
+				type: "POST",
+				url: baseURL + "almaws/v1/users/" + user.primary_id + "/loans?user_id_type=all_unique&item_barcode=" + $("#barcode").val() + "&apikey=" + apiKey,
+				contentType: "application/xml",
+				data: "<?xml version='1.0' encoding='UTF-8'?><item_loan><circ_desk>" + circDesk + "</circ_desk><library>" + libraryName + "</library></item_loan>",
+				dataType: "xml"
+			}).done(function (data) {
+				var dueDate = new Date($(data).find("due_date").text());
+				var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
+				$("#loanstable").append("<tr><td>" + $(data).find("title").text() + "</td><td>" + dueDateText + "</td></tr>");
+			}).fail(function (jqxhr, textStatus, error) {
+				$("#dataerror").show();
+				console.log(jqxhr.responseText);
+				setTimeout(function () {
+					$("#dataerror").fadeOut(1000);
+				}, 3000);
+			}).always(function () {
+				$("#barcode").prop("disabled", false);
+				$("#barcode").val("");
+				$("#barcode").focus();
+			});
+
+		}
+	}
+
+	function logout() {
+		clearData();
+		$("#logoutconf").show();
+		setTimeout(function () {
+			$("#logoutconf").fadeOut(1000);
+		}, 3000);
+	}
+
+	function clearData() {
+		$("#userid").val("");
+		$("#barcode").val("");
+		$("#scanbox").hide();
+		$("#loginbox").fadeIn(500);
+		$("#userid").focus();
+		user = undefined;
+	}
+
+	bindEnterKey();
+	checkInactivity();
 	$("#userid").focus();
-}
-
-$( document ).ready(function() {
-	  $( "#userid" ).focus();
+	$("#userid").on("blur", function() {
+		if ($(this).val()) { login();	}
 	});
+	$("#barcode").on("blur", function() {
+		if ($(this).val()) { loan();	}
+	});
+	$("#userid").on("keyup", function () {
+		// triggers login when the length of the ID hits 8 characters
+		if ($(this).val().length >= 8) { login();	}
+	});
+	$("#barcode").on("keyup", function () {
+		// triggers item lookup when the length of the barcode hits 14 numbers
+		if ($(this).val().length >= 14) {	loan();	}
+	});
+	$("#login").on("click", login);
+	$("#logout").on("click", logout);
+	$("#lookup").on("click", loan);
+});

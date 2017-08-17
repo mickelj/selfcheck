@@ -1,15 +1,21 @@
 /* COMMMON */
 
 * {
-	font-family: "Ubuntu", sans-serif;
+	/* font-family: "Roboto", "Helvetica", "Arial", sans-serif; */
+	margin: 0px;
+	padding: 0px;
+	/* line-height: 18px; */
 }
 
 body {
-	margin: 0px;
-	padding: 0px;
-	line-height: 18px;
-	
 	background-color: #F0F5FF;
+}
+
+section {
+	position: absolute;
+	top: 37%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-37%);
 }
 
 input {
@@ -32,44 +38,43 @@ textarea {
 	text-align: center;
 }
 
+
 /* TOP TOOLBAR */
+
 .toptoolbar {
-	height: 62px;
 	width: 100%;
-	
-	
 	background: #ededed;
-	
-	background: -webkit-linear-gradient(#ffffff, #ededed);
+	background: #14436c;
+	/* background: -webkit-linear-gradient(#ffffff, #ededed);
 	background: -o-linear-gradient(#ffffff, #ededed);
 	background: -moz-linear-gradient(#ffffff, #ededed);
-	background: linear-gradient(#ffffff, #ededed); 
-	
+	background: linear-gradient(#ffffff, #ededed);  */
 	border-bottom: 1px solid #909090;
 	box-shadow: 0px 3px 5px 0px #acacac;
 }
 
-.toptoolbar .logo {
-	padding-top: 4px;
-	margin-left: 10px;
+.toptoolbar .logo p {
+	padding: 2rem 0;
 	text-align: center;
+	font-family: "Libre Baskerville", Georgia, 'Times New Roman', Times, serif;
+	font-size: 2rem;
+	color: #fff;
+	margin-bottom: 0;
 }
 
 
 /* MAIN CONTENT */
+
 .maincontent {
 	text-align: center;
 	margin: 40px auto 0px auto;
-	
 	background: #fafafa;
-	
 	background: -webkit-linear-gradient(#ffffff, #ededed);
 	background: -o-linear-gradient(#ffffff, #ededed);
 	background: -moz-linear-gradient(#ffffff, #ededed);
-	background: linear-gradient(#ffffff, #ededed); 
-	
+	background: linear-gradient(#ffffff, #ededed);
 	border: 1px solid #cacaca;
-	border-radius: 15px;
+	border-radius: 2px;
 	box-shadow: 0px 3px 5px 0px #acacac;
 }
 
@@ -81,29 +86,36 @@ textarea {
 	width: 900px;
 }
 
+#loginbox {
+	height: 300px;
+}
+
+#scanbox {
+	height: 500px;
+}
+
 .maincontent .h1title {
 	padding: 20px;
-	background: #14436c;
-	
+	background: #0B4577;
 	background: -webkit-linear-gradient(#14436c, #1c5d97);
 	background: -o-linear-gradient(#14436c, #1c5d97);
 	background: -moz-linear-gradient(#14436c, #1c5d97);
-	background: linear-gradient(#14436c, #1c5d97); 
-	
+	background: linear-gradient(#14436c, #1c5d97);
 	color: #ffffff;
-    font-weight: bold;
-    border-radius: 15px 15px 0px 0px;
-    font-size: 140%;
+	font-weight: bold;
+	border-radius: 2px 2px 0px 0px;
+	font-size: 140%;
 }
 
 .maincontent .h2title {
 	font-size: 120%;
-    font-weight: bold;
+	font-weight: bold;
 	color: #202020;
 	padding-bottom: 15px;
 }
-	
-.maincontent .databox {
+
+.maincontent .databox div {
+	padding: 1em 0;
 }
 
 .maincontent .databox input[type="text"] {
@@ -114,19 +126,22 @@ textarea {
 	-moz-box-sizing: border-box;
 	height: 32px;
 	outline: none;
-	
 	background-color: #fff;
 	padding: 0 10px 0 10px;
 	width: 80%;
 	font-size: 15px;
 	font-weight: 300;
 	text-overflow: ellipsis;
-	
 	text-align: center;
 }
 
-.maincontent .databox input[type="button"] {
-	padding: 10px 40px;
+#barcode {
+	margin: 5px 10px 5px 93px;
+	width: 645px;
+}
+
+.maincontent .databox button {
+	/* padding: 10px 40px;
 
 	color: #ffffff;
 	font-weight: bold;
@@ -140,22 +155,31 @@ textarea {
 	background: -moz-linear-gradient(#808080, #505050);
 	background: linear-gradient(#808080, #505050);
 	
-	cursor: pointer; 
+	cursor: pointer;  */
 }
 
-.maincontent .databox input[type="button"]:hover {
-
-	background: #404040;
+.maincontent .databox button:hover {
+	/* background: #404040;
 	background: -webkit-linear-gradient(#505050, #202020);
 	background: -o-linear-gradient(#505050, #202020);
 	background: -moz-linear-gradient(#505050, #202020);
-	background: linear-gradient(#505050, #202020);
-	
+	background: linear-gradient(#505050, #202020); */
 }
 
-.maincontent .errormessage {
-	color: #ff0000;
-	
+#scanboxtitle {
+	text-align: left;
+}
+
+.errormessage {
+	color: #fff;
+	margin: 1em auto;
+	background: #d00;
+	border: 1px solid #800;
+	width: 30%;
+	padding: 1em;
+	text-align: center;
+	font-size: 1.5em;
+	border-radius: 2px;
 }
 
 .maincontent .headertable {
@@ -165,10 +189,10 @@ textarea {
 
 .maincontent .headertable td {
 	padding: 15px 0px 15px 0px;
+	width: 33.3%;
 }
 
-.maincontent .headertable td .headertablekey {
-}
+.maincontent .headertable td .headertablekey {}
 
 .maincontent .headertable td .headertablevalue {
 	font-weight: bold;
@@ -177,7 +201,6 @@ textarea {
 .maincontent .loanstable {
 	margin: 10px auto 10px auto;
 	width: 80%;
-	
 	border-top: 1px solid #cdcdcd;
 	border-left: 1px solid #cdcdcd;
 	border-right: 1px solid #cdcdcd;
@@ -186,13 +209,11 @@ textarea {
 	-moz-box-sizing: border-box;
 	line-height: 32px;
 	outline: none;
-	
 	background-color: #fff;
 	width: 80%;
 	font-size: 15px;
 	font-weight: 300;
 	text-overflow: ellipsis;
-	
 	text-align: left;
 }
 
@@ -207,77 +228,84 @@ textarea {
 	font-size: 90%;
 }
 
+
 /* The Modal (background) */
+
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: #909090; /* Fallback color */
-    background-color: rgba(90, 90, 90, 0.9); /* Black w/ opacity */
+	display: none;
+	/* Hidden by default */
+	position: fixed;
+	/* Stay in place */
+	z-index: 1;
+	/* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%;
+	/* Full width */
+	height: 100%;
+	/* Full height */
+	overflow: auto;
+	/* Enable scroll if needed */
+	background-color: #909090;
+	/* Fallback color */
+	background-color: rgba(90, 90, 90, 0.9);
+	/* Black w/ opacity */
 }
 
+
 /* Modal Content/Box */
+
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
+	background-color: #fefefe;
+	margin: 15% auto;
+	/* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #888;
 	width: 30%;
-    border-radius: 10px;
+	border-radius: 2px;
 }
 
 .modalheaderdiv {
-    text-align: center;
-    font-weight: bold;
-    font-size: 120%;
+	text-align: center;
+	font-weight: bold;
+	font-size: 120%;
 }
 
 .modalclose {
 	padding: 10px 40px;
-
 	color: #ffffff;
 	font-weight: bold;
-
-	border-radius: 5px;
+	border-radius: 2px;
 	border: 1px solid #909090;
-	
 	background: #656565;
 	background: -webkit-linear-gradient(#808080, #505050);
 	background: -o-linear-gradient(#808080, #505050);
 	background: -moz-linear-gradient(#808080, #505050);
 	background: linear-gradient(#808080, #505050);
-	
-	cursor: pointer; 
+	cursor: pointer;
 }
 
 .modalclose:hover {
-
 	background: #404040;
 	background: -webkit-linear-gradient(#505050, #202020);
 	background: -o-linear-gradient(#505050, #202020);
 	background: -moz-linear-gradient(#505050, #202020);
 	background: linear-gradient(#505050, #202020);
-	
 }
 
+
 /* The Close Button */
+
 .close {
-    color: #aaa;
-    float: right;
-    font-size: 16px;
-    font-weight: bold;
+	color: #aaa;
+	float: right;
+	font-size: 16px;
+	font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
 }
-
-
