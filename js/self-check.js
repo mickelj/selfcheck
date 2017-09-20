@@ -38,6 +38,7 @@ $(document).ready(function () {
 	}
 
 	function login() {
+		$("#login").prop("disabled", true);		
 		var loginid = $("#userid").val();
 		if ((loginid != null) && (loginid != "")) {
 
@@ -54,18 +55,31 @@ $(document).ready(function () {
 				contentType: "text/plain",
 				dataType: "json",
 				crossDomain: true
-
 			}).done(function (data) {
 				user = data;
-
 				// prepare scan box
 				$("#scanboxtitle #firstname").text(data.first_name);
 				$("#scanboxtitle #lastname").text(data.last_name);
 				$("#userloans").text(data.loans.value);
-				$("#userrequests").text(data.requests.value);
+				// $("#userrequests").text(data.requests.value);
 				$("#userfees").text("$" + data.fees.value);
-				$("#loanstable").find("tr:gt(0)").remove();
-
+				if (data.fees.value > 0) {
+					$("#userfees").parent().addClass("alert alert-danger");
+				} else {
+					$("#userfees").parent().removeClass("alert alert-danger");
+				}
+				$.ajax({
+					type: "GET",
+					url: data.loans.link + "?apikey=" + apiKey,
+					contentType: "text/plain",
+					dataType: "json"
+				}).done(function(data) {
+					data.item_loan.forEach(function(loan) {
+						var dueDate = new Date(loan.due_date);
+						var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();		
+						$("#prevloanstable").append("<tr><td>" + loan.title + "</td><td>" + dueDateText + "</td></tr>");
+					});
+				});
 				$("#loginbox").hide();
 				$("#scanbox").fadeIn(500);
 
@@ -81,16 +95,16 @@ $(document).ready(function () {
 				$("#userid").focus();
 			}).always(function () {
 				$("#userid").prop("disabled", false);
+				$("#login").prop("disabled", false);				
 			});
 		}
 	}
 
 	function loan() {
+		$("#lookup").prop("disabled", true);
 		var barcode = $("#barcode").val();
 		if ((barcode != null) && (barcode != "")) {
-
 			$("#barcode").prop("disabled", true);
-
 			$.ajax({
 				type: "POST",
 				url: baseURL + "almaws/v1/users/" + user.primary_id + "/loans?user_id_type=all_unique&item_barcode=" + $("#barcode").val() + "&apikey=" + apiKey,
@@ -98,6 +112,7 @@ $(document).ready(function () {
 				data: "<?xml version='1.0' encoding='UTF-8'?><item_loan><circ_desk>" + circDesk + "</circ_desk><library>" + libraryName + "</library></item_loan>",
 				dataType: "xml"
 			}).done(function (data) {
+				console.log(data);
 				var dueDate = new Date($(data).find("due_date").text());
 				var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
 				$("#loanstable").append("<tr><td>" + $(data).find("title").text() + "</td><td>" + dueDateText + "</td></tr>");
@@ -111,8 +126,8 @@ $(document).ready(function () {
 				$("#barcode").prop("disabled", false);
 				$("#barcode").val("");
 				$("#barcode").focus();
+				$("#lookup").prop("disabled", false);				
 			});
-
 		}
 	}
 
@@ -125,6 +140,9 @@ $(document).ready(function () {
 	}
 
 	function clearData() {
+		$("#loanstable").find("tr:gt(0)").remove();
+		$("#prevloanstable").find("tr:gt(0)").remove();
+		$("#prevloans").modal("hide");
 		$("#userid").val("");
 		$("#barcode").val("");
 		$("#scanbox").hide();

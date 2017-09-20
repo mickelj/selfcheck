@@ -20,14 +20,14 @@
 	<nav class="toptoolbar">
 		<div class="logo">
 			<!-- <img src="images/sersol-logo.png"> -->
-			<p>Washington and Lee University Library</p>
+			<p>Washington and Lee University Libraries</p>
 		</div>
 	</nav>
-
+	
 	<section class="maincontent smallbox" id="loginbox">
 		<div class="h1title">W&amp;L Self Checkout Service</div>
 		<div class="databox">
-			<div class="h2title">Please scan or type your ID</div>
+			<div class="h2title">Please scan your ID card</div>
 			<div>
 				<input type="text" id="userid" placeholder="ID..." />
 			</div>
@@ -58,20 +58,21 @@
 		<div>
 			<table cellpadding="0px" cellspacing="0px" class="headertable">
 				<tr>
-					<td><span class="headertablekey">Loans:</span> <span class="headertablevalue" id="userloans"></span></td>
-					<td><span class="headertablekey">Requests:</span> <span class="headertablevalue" id="userrequests"></span></td>
+					<td><span class="headertablekey">Previous Loans:</span> <span class="headertablevalue" id="userloans"></span> <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#prevloans">View</button></td>
+					<!-- <td><span class="headertablekey">Requests:</span> <span class="headertablevalue" id="userrequests"></span></td> -->
 					<td><span class="headertablekey">Fines & Fees:</span> <span class="headertablevalue" id="userfees"></span></td>
 				</tr>
 			</table>
 		</div>
 		<div class="databox">
-			<div class="h2title">Please scan or type your next item:</div>
+			<div class="h2title">Please scan the item's barcode</div>
 			<div class="form-row align-items-center">
 				<input type="text" id="barcode" placeholder="Barcode..." pattern="\d{14}" />
-				<button class="btn btn-primary btn-sm" id="lookup">Lookup</button>
+				<!-- <button class="btn btn-primary btn-sm" id="lookup">Lookup</button> -->
 			</div>
-			<div>
-				<table cellpadding="0px" cellspacing="0px" class="loanstable" id="loanstable">
+			<div id="newloans">
+				<table cellpadding="0" cellspacing="0" class="loanstable" id="loanstable">
+					<caption>New Loans</caption>
 					<tr>
 						<th>Title</th>
 						<th>Due Date</th>
@@ -80,6 +81,27 @@
 			</div>
 		</div>
 	</section>
+
+	<div class="modal fade" id="prevloans" tabindex="-1" role="dialog" aria-labelledby="prevloans" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Currently Checked Out</h5>
+				</div>
+				<div class="modal-body">
+					<table cellpadding="0" cellspacing="0" class="loanstable" id="prevloanstable">
+						<tr>
+							<th>Title</th>
+							<th>Due Date</th>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<div class="hide card bg-danger col-6 mx-auto text-white mt-3" id="dataerror">
 		<h4 class="card-header">Item Error</h4>

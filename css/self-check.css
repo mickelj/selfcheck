@@ -26,6 +26,12 @@ textarea {
 	outline: none;
 }
 
+caption {
+	color: #000;
+	caption-side: top;
+	font-weight: bold;
+}
+
 .hide {
 	display: none;
 }
@@ -54,7 +60,7 @@ textarea {
 }
 
 .toptoolbar .logo p {
-	padding: 2rem 0;
+	padding: 1rem 0;
 	text-align: center;
 	font-family: "Libre Baskerville", Georgia, 'Times New Roman', Times, serif;
 	font-size: 2rem;
@@ -91,7 +97,7 @@ textarea {
 }
 
 #scanbox {
-	height: 500px;
+	min-height: 500px;
 }
 
 .maincontent .h1title {
@@ -115,7 +121,7 @@ textarea {
 }
 
 .maincontent .databox div {
-	padding: 1em 0;
+	padding: 1em 0 0;
 }
 
 .maincontent .databox input[type="text"] {
@@ -136,8 +142,17 @@ textarea {
 }
 
 #barcode {
-	margin: 5px 10px 5px 93px;
-	width: 645px;
+	/* margin: 5px 10px 5px 93px; */
+	/* width: 645px; */
+	margin: 5px auto;
+}
+
+#newloans {
+	padding-top: 0em;
+}
+
+#prevloans {
+	padding-bottom: 1em;
 }
 
 .maincontent .databox button {
@@ -198,7 +213,7 @@ textarea {
 	font-weight: bold;
 }
 
-.maincontent .loanstable {
+.loanstable {
 	margin: 10px auto 10px auto;
 	width: 80%;
 	border-top: 1px solid #cdcdcd;
@@ -217,51 +232,28 @@ textarea {
 	text-align: left;
 }
 
-.maincontent .loanstable th {
+.loanstable th {
 	background: #dadada;
 	padding: 0px 0px 0px 10px;
 }
 
-.maincontent .loanstable td {
+.loanstable td {
 	border-bottom: 1px solid #cdcdcd;
 	padding: 0px 10px 0px 10px;
 	font-size: 90%;
 }
 
+.btn-sm {
+	margin-left: 10px;
 
-/* The Modal (background) */
-
-.modal {
-	display: none;
-	/* Hidden by default */
-	position: fixed;
-	/* Stay in place */
-	z-index: 1;
-	/* Sit on top */
-	left: 0;
-	top: 0;
-	width: 100%;
-	/* Full width */
-	height: 100%;
-	/* Full height */
-	overflow: auto;
-	/* Enable scroll if needed */
-	background-color: #909090;
-	/* Fallback color */
-	background-color: rgba(90, 90, 90, 0.9);
-	/* Black w/ opacity */
 }
-
-
 /* Modal Content/Box */
 
 .modal-content {
 	background-color: #fefefe;
-	margin: 15% auto;
-	/* 15% from the top and centered */
+	margin: 30% auto;
 	padding: 20px;
 	border: 1px solid #888;
-	width: 30%;
 	border-radius: 2px;
 }
 
@@ -293,19 +285,6 @@ textarea {
 	background: linear-gradient(#505050, #202020);
 }
 
-
-/* The Close Button */
-
-.close {
-	color: #aaa;
-	float: right;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-	color: black;
-	text-decoration: none;
-	cursor: pointer;
+.modal-backdrop.show {
+	opacity: 0.75;
 }
